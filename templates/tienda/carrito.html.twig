@@ -1,0 +1,37 @@
+<ul id="carrito-lista">
+    {% set total = 0 %}
+    {% if carrito is not empty %}
+        {% for productoId, cantidad in carrito %}
+            {% set producto = productos|filter(p => p.id == productoId)|first %}
+            {% set subtotal = cantidad * producto.precio %}
+            {% set total = total + subtotal %}
+            <li id="carrito-item-{{ producto.id }}">
+                {{ producto.nombre }} - Cantidad: {{ cantidad }}, Subtotal: ${{ subtotal|number_format(2, '.', ',') }}
+                <button class="eliminar-producto" data-producto-id="{{ producto.id }}">❌</button>
+            </li>
+        {% endfor %}
+    {% else %}
+        <li>El carrito está vacío</li>
+    {% endif %}
+</ul>
+
+<!-- Botón de pagar -->
+{% if carrito is not empty %}
+    <div style="text-align: center; margin-top: 20px;">
+        <button id="boton-pagar" style="
+            padding: 12px 24px;
+            background-color: #ff4081;
+            color: #ffffff;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+        ">
+            Pagar ${{ total|number_format(2, '.', ',') }}
+        </button>
+    </div>
+{% endif %}

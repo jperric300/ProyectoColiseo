@@ -1,0 +1,99 @@
+{% block stylesheets %}
+    <style>
+        body {
+            background-color: #000; /* Fondo negro */
+            color: #fff; /* Texto blanco */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif; /* Fuente más moderna */
+        }
+
+        h1 {
+            color: #fff; /* Título en blanco */
+            text-align: center;
+            font-size: 2.5rem; /* Aumentar tamaño del título */
+            margin-bottom: 20px; /* Mayor separación inferior */
+        }
+
+        .card {
+            background-color: #1a1a1a; /* Fondo oscuro para la tarjeta */
+            color: #fff; /* Texto blanco dentro de la tarjeta */
+            width: 100%;
+            max-width: 600px; /* Aumentar el ancho máximo de la tarjeta */
+            padding: 30px; /* Ajustar el padding interno */
+            border-radius: 12px; /* Un borde más suave */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Sombra para un efecto de profundidad */
+        }
+
+        .form-control {
+            background-color: #333; /* Fondo gris oscuro para los inputs */
+            color: #fff; /* Texto blanco en los inputs */
+            font-size: 1.2rem; /* Aumentar el tamaño de la fuente en los inputs */
+            padding: 12px; /* Aumentar el padding de los inputs */
+            border-radius: 6px; /* Bordes más suaves */
+            border: 1px solid #007bff; /* Borde azul para el input */
+            margin-bottom: 20px; /* Espacio entre los inputs */
+            transition: border 0.3s; /* Transición suave para el borde */
+        }
+
+        .form-control:focus {
+            border-color: #fff; /* Borde blanco al enfocar el input */
+            outline: none; /* Sin contorno */
+        }
+
+        .btn-primary {
+            background-color: #007bff; /* Color azul para el botón */
+            border-color: #007bff;
+            color: #fff; /* Cambiar el texto del botón a blanco */
+            width: 100%; /* Hacer que el botón ocupe todo el ancho */
+            font-size: 1.2rem; /* Aumentar el tamaño del texto del botón */
+            padding: 15px; /* Aumentar el padding del botón */
+            border: none; /* Sin borde */
+            border-radius: 6px; /* Bordes más suaves */
+            cursor: pointer; /* Cambiar el cursor al pasar sobre el botón */
+            transition: background-color 0.3s; /* Transición suave para el fondo */
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Cambiar a un azul más oscuro al pasar el cursor */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px; /* Aumentar el ancho máximo del contenedor */
+            padding: 20px; /* Ajustar el padding del contenedor */
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px; /* Mayor espacio entre los campos */
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Selecciona tu Disponibilidad</h1>
+
+        <div class="card">
+            <div class="card-body">
+                {{ form_start(disponibilidadForm) }}
+
+                <div class="form-group">
+                    <label for="diasDisponibles">Días Disponibles</label>
+                    {{ form_widget(disponibilidadForm.diasDisponibles, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+
+                <!-- Campo oculto para el usuario -->
+                <input type="hidden" name="username" value="{{ user.username }}">
+
+                <button type="submit" class="btn btn-primary">Guardar Disponibilidad</button>
+
+                {{ form_end(disponibilidadForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tienda</title>
+    <style>
+        /* Estilos generales */
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        h1 {
+            text-align: center;
+            padding: 20px;
+            color: #ffffff;
+        }
+
+        /* Contenedor de productos en formato de grid */
+        #contenedor-productos-carrito {
+            display: grid;
+            grid-template-areas:
+                "producto1 producto2 producto3 carrito"
+                "producto4 producto5 producto6 producto7";
+            grid-gap: 20px;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Tarjetas de producto */
+        .producto, #carrito {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s;
+            height: 93%;
+        }
+
+        .producto:hover, #carrito:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Posiciones de las tarjetas y carrito en la grilla */
+        .producto:nth-child(1) { grid-area: producto1; }
+        .producto:nth-child(2) { grid-area: producto2; }
+        .producto:nth-child(3) { grid-area: producto3; }
+        .producto:nth-child(4) { grid-area: producto4; }
+        .producto:nth-child(5) { grid-area: producto5; }
+        .producto:nth-child(6) { grid-area: producto6; }
+        .producto:nth-child(7) { grid-area: producto7; }
+        #carrito { grid-area: carrito; }
+
+        .producto img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        /* Estilo del título de cada producto */
+        .producto h3 {
+            font-size: 1.3em;
+            color: #ffffff;
+            margin: 0 0 20px 0;
+            text-align: center;
+        }
+
+        /* Descripción del producto */
+        .producto .descripcion {
+            color: #b3b3b3;
+            font-size: 0.9em;
+            text-align: center;
+            margin: 12px 0;
+        }
+
+        /* Precio y stock */
+        .precio-stock {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin: 12px 0;
+        }
+
+        .precio-stock p {
+            margin: 0 15px;
+            font-size: 1em;
+        }
+
+        .add-to-cart-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .add-to-cart-form input[type="number"] {
+            width: 60px;
+            padding: 5px;
+            margin: 5px 0;
+            text-align: center;
+            background-color: #333;
+            border: 1px solid #444;
+            color: #ffffff;
+            border-radius: 5px;
+        }
+
+        .add-to-cart-form button {
+            padding: 8px 12px;
+            background-color: #6200ea;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        .add-to-cart-form button:hover {
+            background-color: #3700b3;
+        }
+
+        /* Estilos específicos para el carrito */
+        #carrito {
+            background-color: #80d4ff;
+            padding: 20px;
+            width: 250px;
+            border-radius: 8px;
+        }
+
+        #carrito h3 {
+            text-align: center;
+            color: #000000;
+            font-size: 1.3em;
+            margin-top: 0;
+        }
+
+        #carrito ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #carrito ul li {
+            color: #000000;
+            padding: 8px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .eliminar-producto {
+            background: none;
+            border: none;
+            color: red;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        /* Estilo del botón de pagar */
+        #boton-pagar {
+            padding: 12px 24px;
+            background: linear-gradient(145deg, #6a1b9a, #ab47bc); /* Degradado de color */
+            color: #ffffff;
+            border: none;
+            border-radius: 50px; /* Botón redondeado */
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para efecto flotante */
+            transition: all 0.3s ease; /* Transición suave para efectos */
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Efecto hover para el botón de pagar */
+        #boton-pagar:hover {
+            background: linear-gradient(145deg, #ab47bc, #6a1b9a); /* Invertir los colores del degradado */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Aumentar el efecto de sombra */
+            transform: translateY(-4px); /* Efecto de elevar el botón */
+        }
+
+        /* Efecto activo (cuando el botón se presiona) */
+        #boton-pagar:active {
+            transform: translateY(2px); /* Reducir el efecto de elevación */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Efecto de sombra más pequeño */
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Tienda de Productos</h1>
+
+    <!-- Contenedor que incluye los productos y el carrito -->
+    <div id="contenedor-productos-carrito">
+        {% for producto in productos %}
+            <div class="producto">
+                <img src="{{ asset('images/producto' ~ loop.index ~ '.jpg') }}" alt="Imagen de {{ producto.nombre }}">
+                <h3>{{ producto.nombre }}</h3>
+                <p class="descripcion">{{ producto.descripcion }}</p>
+                <div class="precio-stock">
+                    <p>Precio: ${{ producto.precio|number_format(2, '.', ',') }}</p>
+                    <p>Stock: {{ producto.stock }}</p>
+                </div>
+                <form action="{{ path('app_tienda') }}" method="POST" class="add-to-cart-form">
+                    <input type="number" name="cantidad" min="1" max="{{ producto.stock }}" value="1" required>
+                    <input type="hidden" name="producto_id" value="{{ producto.id }}">
+                    <button type="submit">Añadir al carrito</button>
+                </form>
+            </div>
+        {% endfor %}
+        
+        <!-- Carrito -->
+        <div id="carrito">
+            <h3>Carrito</h3>
+            <ul id="carrito-lista">
+                {% set total = 0 %}
+                {% if carrito is not empty %}
+                    {% for productoId, cantidad in carrito %}
+                        {% set producto = productos|filter(p => p.id == productoId)|first %}
+                        {% set subtotal = cantidad * producto.precio %}
+                        {% set total = total + subtotal %}
+                        <li id="carrito-item-{{ producto.id }}">
+                            {{ producto.nombre }} - Cantidad: {{ cantidad }}, Subtotal: ${{ subtotal|number_format(2, '.', ',') }}
+                            <button class="eliminar-producto" data-producto-id="{{ producto.id }}">❌</button>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li id="mensaje-vacio">El carrito está vacío</li>
+                {% endif %}
+            </ul>
+
+            {% if carrito is not empty %}
+                <div style="text-align: center; margin-top: 20px;">
+        <button id="boton-pagar" onclick="window.location.href='{{ path('app_confirmacion') }}'">
+    Pagar ${{ total|number_format(2, '.', ',') }}
+</button>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Manejo de eliminación de productos en el carrito
+        document.querySelectorAll('.eliminar-producto').forEach(button => {
+            button.addEventListener('click', function() {
+                const productoId = this.dataset.productoId;
+
+                fetch("{{ path('app_tienda') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "X-Requested-With": "XMLHttpRequest"
+                    },
+                    body: new URLSearchParams({
+                        "producto_id": productoId,
+                        "accion": "eliminar"
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Eliminar el producto de la lista del carrito
+                        const item = document.getElementById('carrito-item-' + productoId);
+                        item.remove();
+
+                        // Actualizar el botón de pagar
+                        document.getElementById('boton-pagar').textContent = 'Pagar $' + data.total.toFixed(2);
+
+                        // Si el carrito está vacío, ocultar el botón de pagar y mostrar mensaje vacío
+                        if (data.total === 0) {
+                            document.getElementById('boton-pagar').style.display = 'none';
+                            document.getElementById('mensaje-vacio').style.display = 'block';
+                        }
+                    } else {
+                        alert('No se pudo eliminar el producto del carrito.');
+                    }
+                })
+                .catch(error => console.error('Error al eliminar el producto:', error));
+            });
+        });
+    </script>
+</body>
+</html>

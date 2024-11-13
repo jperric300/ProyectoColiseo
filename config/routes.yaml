@@ -1,0 +1,58 @@
+controllers:
+    resource: ../src/Controller/
+    type: attribute
+    
+home:
+    path: /home
+    controller: App\Controller\HomeController::index
+
+login:
+    path: /login
+    controller: App\Controller\SecurityController::login
+
+app_logout:
+    path: /logout
+
+app_register:
+    path: /register
+    controller: App\Controller\RegistrationController::register
+
+app_options:
+    path: /options
+    controller: App\Controller\ObjectivesController::options
+
+app_confirm_option:
+    path: /confirm-option
+    controller: App\Controller\ObjectivesController::confirmOption
+
+app_disponibilidad:
+    path: /disponibilidad
+    controller: App\Controller\DisponibilidadController::Disponibilidad
+    
+
+app_pagina_principal:
+    path: /pagina-principal
+    controller: App\Controller\PaginaPrincipalController::paginaPrincipal
+    
+app_rutina:
+    path: /mi-rutina
+    controller: App\Controller\RutinaController::rutinaController
+
+app_tienda:
+    path: /tienda
+    controller: App\Controller\TiendaController::tiendaController
+
+app_progreso:
+    path: /mi-progreso
+    controller: App\Controller\ProgresoController::progresoController
+
+app_confirmacion:
+    path: /confirmacion
+    controller: App\Controller\TiendaController::confirmacion
+
+app_pagar:
+    path: /pagar
+    controller: App\Controller\TiendaController::pagar
+
+
+

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}El Coliseo{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            padding-top: 70px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .navbar {
+            background-color: #333;
+            justify-content: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+            padding: 15px 20px;
+        }
+        .navbar .navbar-brand {
+            color: #FFD700;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 20px;
+        }
+        .navbar .navbar-brand:hover {
+            color: #fff;
+        }
+        .navbar .nav-link {
+            color: #bbb;
+            margin-left: 15px;
+        }
+        .navbar .nav-link:hover {
+            color: #FFD700;
+        }
+        .navbar .btn-logout {
+            color: #000;
+            background-color: #FFD700;
+            border: none;
+        }
+        .navbar .btn-logout:hover {
+            background-color: #fff;
+            color: #333;
+        }
+        .motivational-quote {
+            text-align: center;
+            font-size: 1.5rem;
+            margin: 20px 0;
+            color: #FFD700;
+        }
+        .motivational-image {
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+            margin-bottom: 20px;
+        }
+        .separator {
+            margin: 40px auto;
+            height: 5px;
+            width: 80%;
+            background: linear-gradient(to right, #FFD700, transparent, #FFD700);
+            border-radius: 50px;
+            animation: glow 3s infinite;
+        }
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 10px #FFD700; }
+            50% { box-shadow: 0 0 20px #FFD700; }
+        }
+        .featured-products {
+            text-align: center;
+            margin: 40px 0;
+        }
+        .card {
+            background-color: #222;
+            color: #fff;
+            border: 1px solid #555;
+            height: 100%;
+        }
+        .card .card-title {
+            color: #FFD700;
+        }
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 350px;
+        }
+        .card-img-top {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            object-position: center;
+            border-bottom: 1px solid #555;
+        }
+        .footer {
+            background-color: #222;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <a class="navbar-brand" href="{{ path('app_pagina_principal') }}">Inicio</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_rutina') }}">Mi Rutina</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_tienda') }}">Tienda</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_progreso') }}">Mi Progreso</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link btn btn-logout" href="{{ path('app_logout') }}">Cerrar Sesión</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <img src="{{ asset('images/fotoPrincipal.png') }}" alt="Imagen Principal" class="motivational-image" />
+        <div class="motivational-quote">“La única mala rutina es la que no haces. ¡Empieza hoy y transforma tu vida!”</div>
+        
+        <div class="separator"></div>
+        
+        <!-- Sección de Productos Destacados -->
+        <div class="featured-products">
+            <h2>Productos Más Destacados</h2>
+            <div class="row mt-4">
+                {% for producto in productosDestacados %}
+                    <div class="col-md-4 d-flex">
+                        <div class="card">
+                            {% if producto.id == 1 %}
+                                <img src="{{ asset('images/producto1.jpg') }}" alt="{{ producto.nombre }}" class="card-img-top">
+                            {% elseif producto.id == 2 %}
+                                <img src="{{ asset('images/producto2.jpg') }}" alt="{{ producto.nombre }}" class="card-img-top">
+                            {% elseif producto.id == 4 %}
+                                <img src="{{ asset('images/producto4.jpg') }}" alt="{{ producto.nombre }}" class="card-img-top">
+                            {% endif %}
+                            <div class="card-body text-center">
+                                <h5 class="card-title">{{ producto.nombre }}</h5>
+                                <p class="card-text">{{ producto.descripcion }}</p>
+                                <!-- Se eliminó el precio -->
+                                <a href="{{ path('app_tienda') }}" class="btn btn-warning mt-auto">Ver más</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% block body %}{% endblock %}
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 El Coliseo. Todos los derechos reservados.</p>
+        <p>Síguenos en nuestras redes sociales</p>
+    </footer>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

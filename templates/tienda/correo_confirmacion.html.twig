@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmación de Compra</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333;">
+    <h1 style="text-align: center; color: #333;">Confirmación de Compra</h1>
+    <p>Gracias por tu compra. A continuación, te mostramos los detalles de tu pedido:</p>
+    <table style="width: 100%; border: 1px solid #ddd; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th style="padding: 8px; border: 1px solid #ddd; background-color: #f2f2f2;">Producto</th>
+                <th style="padding: 8px; border: 1px solid #ddd; background-color: #f2f2f2;">Cantidad</th>
+                <th style="padding: 8px; border: 1px solid #ddd; background-color: #f2f2f2;">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for producto in productosEnCarrito %}
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;">{{ producto.nombre }}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">{{ producto.cantidad }}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">${{ producto.subtotal|number_format(2, '.', ',') }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3 style="text-align: right; margin-top: 20px;">Total: ${{ total|number_format(2, '.', ',') }}</h3>
+
+    <p>Gracias por tu compra. Si tienes alguna pregunta, no dudes en contactarnos.</p>
+</body>
+</html>

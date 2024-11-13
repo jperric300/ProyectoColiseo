@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Compra</title>
+    <style>
+        /* Estilos generales */
+        body {
+            background-color: #121212; /* Fondo oscuro */
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #ff4081;
+            font-size: 2.5em;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            color: #ff4081;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            width: 80%;
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            background-color: #333;
+            margin: 8px 0;
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2em;
+        }
+
+        /* Botón de Confirmar */
+        button {
+            padding: 15px 30px;
+            background-color: #ff4081;
+            color: #ffffff;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #f50057;
+        }
+
+        /* Estilo del formulario */
+        form {
+            text-align: center;
+        }
+
+        /* Responsividad para dispositivos pequeños */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            h2, h3 {
+                font-size: 1.4em;
+            }
+
+            button {
+                padding: 12px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Confirmación de Compra</h1>
+
+    <h2>Resumen de tu carrito</h2>
+    <ul>
+        {% for producto in productosEnCarrito %}
+            <li>
+                <span>{{ producto.nombre }} - Cantidad: {{ producto.cantidad }}</span>
+                <span>Subtotal: ${{ producto.subtotal|number_format(2, '.', ',') }}</span>
+            </li>
+        {% endfor %}
+    </ul>
+    
+    <h3>Total: ${{ total|number_format(2, '.', ',') }}</h3>
+
+    <form action="{{ path('app_pagar') }}" method="POST">
+        <button type="submit">Confirmar y Pagar</button>
+    </form>
+</body>
+</html>
