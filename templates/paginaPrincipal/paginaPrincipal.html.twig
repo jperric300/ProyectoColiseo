@@ -120,7 +120,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_progreso') }}">Mi Progreso</a>
                 </li>
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <!-- Enlace adicional para administradores -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('admin_productos_index') }}">Administrar Tienda</a>
+                    </li>
+                {% endif %}
             </ul>
+
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a class="nav-link btn btn-logout" href="{{ path('app_logout') }}">Cerrar Sesión</a>
@@ -152,7 +160,6 @@
                             <div class="card-body text-center">
                                 <h5 class="card-title">{{ producto.nombre }}</h5>
                                 <p class="card-text">{{ producto.descripcion }}</p>
-                                <!-- Se eliminó el precio -->
                                 <a href="{{ path('app_tienda') }}" class="btn btn-warning mt-auto">Ver más</a>
                             </div>
                         </div>

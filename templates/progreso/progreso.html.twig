@@ -116,6 +116,9 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="{{ path('app_progreso') }}">Mi Progreso</a>
                 </li>
+                 {% if is_granted('ROLE_ADMIN') %}
+                    <a class="nav-link admin-link" href="{{ path('admin_productos_index') }}">Administrar Tienda</a>
+                {% endif %}
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">

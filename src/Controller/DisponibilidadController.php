@@ -63,7 +63,7 @@ class DisponibilidadController extends AbstractController
             $entityManager->flush();
 
             // Redirigir a la página principal después de guardar
-            return $this->redirectToRoute('app_pagina_principal');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('disponibilidad/disponibilidad.html.twig', [

@@ -1,75 +1,76 @@
 {% block stylesheets %}
     <style>
+        /* Tu código CSS aquí */
         body {
-            background-color: #000; /* Fondo negro */
-            color: #fff; /* Texto blanco */
+            background-color: #000;
+            color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            font-family: Arial, sans-serif; /* Fuente más moderna */
+            font-family: Arial, sans-serif;
         }
 
         h1 {
-            color: #fff; /* Título en blanco */
+            color: #fff;
             text-align: center;
-            font-size: 2.5rem; /* Aumentar tamaño del título */
-            margin-bottom: 20px; /* Mayor separación inferior */
+            font-size: 2.5rem;
+            margin-bottom: 20px;
         }
 
         .card {
-            background-color: #1a1a1a; /* Fondo oscuro para la tarjeta */
-            color: #fff; /* Texto blanco dentro de la tarjeta */
+            background-color: #1a1a1a;
+            color: #fff;
             width: 100%;
-            max-width: 600px; /* Aumentar el ancho máximo de la tarjeta */
-            padding: 30px; /* Ajustar el padding interno */
-            border-radius: 12px; /* Un borde más suave */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Sombra para un efecto de profundidad */
+            max-width: 600px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
 
         .form-control {
-            background-color: #333; /* Fondo gris oscuro para los inputs */
-            color: #fff; /* Texto blanco en los inputs */
-            font-size: 1.2rem; /* Aumentar el tamaño de la fuente en los inputs */
-            padding: 12px; /* Aumentar el padding de los inputs */
-            border-radius: 6px; /* Bordes más suaves */
-            border: 1px solid #007bff; /* Borde azul para el input */
-            margin-bottom: 20px; /* Espacio entre los inputs */
-            transition: border 0.3s; /* Transición suave para el borde */
+            background-color: #333;
+            color: #fff;
+            font-size: 1.2rem;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #007bff;
+            margin-bottom: 20px;
+            transition: border 0.3s;
         }
 
         .form-control:focus {
-            border-color: #fff; /* Borde blanco al enfocar el input */
-            outline: none; /* Sin contorno */
+            border-color: #fff;
+            outline: none;
         }
 
         .btn-primary {
-            background-color: #007bff; /* Color azul para el botón */
+            background-color: #007bff;
             border-color: #007bff;
-            color: #fff; /* Cambiar el texto del botón a blanco */
-            width: 100%; /* Hacer que el botón ocupe todo el ancho */
-            font-size: 1.2rem; /* Aumentar el tamaño del texto del botón */
-            padding: 15px; /* Aumentar el padding del botón */
-            border: none; /* Sin borde */
-            border-radius: 6px; /* Bordes más suaves */
-            cursor: pointer; /* Cambiar el cursor al pasar sobre el botón */
-            transition: background-color 0.3s; /* Transición suave para el fondo */
+            color: #fff;
+            width: 100%;
+            font-size: 1.2rem;
+            padding: 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
         .btn-primary:hover {
-            background-color: #0056b3; /* Cambiar a un azul más oscuro al pasar el cursor */
+            background-color: #0056b3;
         }
 
         .container {
             width: 100%;
-            max-width: 700px; /* Aumentar el ancho máximo del contenedor */
-            padding: 20px; /* Ajustar el padding del contenedor */
+            max-width: 700px;
+            padding: 20px;
             text-align: center;
         }
 
         .form-group {
-            margin-bottom: 20px; /* Mayor espacio entre los campos */
+            margin-bottom: 20px;
         }
     </style>
 {% endblock %}
@@ -87,8 +88,7 @@
                     {{ form_widget(disponibilidadForm.diasDisponibles, { 'attr': {'class': 'form-control'} }) }}
                 </div>
 
-                <!-- Campo oculto para el usuario -->
-                <input type="hidden" name="username" value="{{ user.username }}">
+               
 
                 <button type="submit" class="btn btn-primary">Guardar Disponibilidad</button>
 

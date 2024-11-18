@@ -55,4 +55,15 @@ app_pagar:
     controller: App\Controller\TiendaController::pagar
 
 
+admin_productos_index:
+    path: /admin/tienda
+    controller: App\Controller\AdministrarTiendaController::index
+    
+admin_productos_eliminar:
+    path: /admin/tienda/eliminar/{id}
+    controller: App\Controller\AdministrarTiendaController::eliminar
 
+admin_productos_guardar:
+    path: /admin/tienda/guardar
+    controller: App\Controller\AdministrarTiendaController::guardar
+   

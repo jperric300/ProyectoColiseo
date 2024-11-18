@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar Tienda</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            padding-top: 70px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .navbar {
+            background-color: #333;
+            justify-content: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+            padding: 15px 20px;
+        }
+        .navbar .navbar-brand {
+            color: #bbb;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 20px;
+        }
+        .navbar .navbar-brand:hover {
+            color: #FFD700;
+        }
+        .navbar .nav-link {
+            color: #bbb;
+            margin-left: 15px;
+        }
+        .navbar .nav-link:hover {
+            color: #FFD700;
+        }
+        .navbar .nav-link.admin-link {
+            color: #FFD700;
+        }
+        .navbar .nav-link.admin-link:hover {
+            color: #fff;
+        }
+        .navbar .btn-logout {
+            color: #000;
+            background-color: #FFD700;
+            border: none;
+        }
+        .navbar .btn-logout:hover {
+            background-color: #fff;
+            color: #333;
+        }
+        .footer {
+            background-color: #222;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            margin-top: auto;
+        }
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .table th {
+            background-color: #333;
+        }
+        .table td {
+            background-color: #444;
+        }
+        .table .form-control {
+            background-color: #555;
+            color: #fff;
+            border: none;
+        }
+     
+        .table .form-control:focus {
+            background-color: #666;
+            border-color: #888;
+            box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.5);
+        }
+        .table .btn {
+            margin-top: 5px;
+        }
+       .table .product-id {
+    background-color: #444; /* Fondo consistente con el resto de la tabla */
+    color: white !important; /* Usamos !important para asegurarnos de que el color se aplique */
+}
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <a class="navbar-brand" href="{{ path('app_pagina_principal') }}">Inicio</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_rutina') }}">Mi Rutina</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_tienda') }}">Tienda</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_progreso') }}">Mi Progreso</a>
+                </li>
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a class="nav-link admin-link" href="{{ path('admin_productos_index') }}">Administrar Tienda</a>
+                {% endif %}
+            </ul>
+
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link btn btn-logout" href="{{ path('app_logout') }}">Cerrar Sesión</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center">Administrar Productos</h1>
+
+        <form id="productos-form" method="post" action="{{ path('admin_productos_guardar') }}">
+            <table class="table table-bordered table-striped table-hover table-sm">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                        <th>Imagen</th>
+                        <th>Stock</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="productos-body">
+                    {% for producto in productos %}
+                        <tr>
+                            <td class="product-id">{{ producto.id }}</td>
+                            <td>
+                                <input type="text" name="productos[{{ producto.id }}][nombre]" value="{{ producto.nombre }}" class="form-control editable">
+                            </td>
+                            <td>
+                                <input type="text" name="productos[{{ producto.id }}][descripcion]" value="{{ producto.descripcion }}" class="form-control editable">
+                            </td>
+                            <td>
+                                <input type="number" name="productos[{{ producto.id }}][precio]" value="{{ producto.precio }}" step="0.01" class="form-control editable">
+                            </td>
+                            <td>
+                                <input type="text" name="productos[{{ producto.id }}][imagen]" value="{{ producto.imagen }}" class="form-control editable">
+                            </td>
+                            <td>
+                                <input type="number" name="productos[{{ producto.id }}][stock]" value="{{ producto.stock }}" class="form-control editable">
+                            </td>
+                            <td>
+                                <form method="post" action="{{ path('admin_productos_eliminar', {'id': producto.id}) }}" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center">No hay productos disponibles.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="text-end mb-3">
+                <button type="button" id="añadir-btn" class="btn btn-primary">Añadir Producto</button>
+            </div>
+
+            <div class="text-center mb-3">
+                <button type="submit" id="guardar-btn" class="btn btn-success">Guardar Cambios</button>
+            </div>
+        </form>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 El Coliseo. Todos los derechos reservados.</p>
+        <p>Síguenos en nuestras redes sociales</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('.editable');
+            const guardarBtn = document.getElementById('guardar-btn');
+            const añadirBtn = document.getElementById('añadir-btn');
+            const productosBody = document.getElementById('productos-body');
+
+            añadirBtn.addEventListener('click', () => {
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td></td>
+                    <td><input type="text" name="productos[new][nombre]" class="form-control editable"></td>
+                    <td><input type="text" name="productos[new][descripcion]" class="form-control editable"></td>
+                    <td><input type="number" name="productos[new][precio]" step="0.01" class="form-control editable"></td>
+                    <td><input type="text" name="productos[new][imagen]" class="form-control editable"></td>
+                    <td><input type="number" name="productos[new][stock]" class="form-control editable"></td>
+                `;
+                productosBody.appendChild(newRow);
+            });
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

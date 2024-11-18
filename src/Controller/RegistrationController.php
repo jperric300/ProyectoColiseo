@@ -22,7 +22,7 @@ class RegistrationController extends AbstractController
         UserPasswordHasherInterface $passwordHasher, 
         EntityManagerInterface $entityManager, 
         ValidatorInterface $validator,
-        SessionInterface $session // Añadimos SessionInterface para manejar la sesión
+        SessionInterface $session
     ): Response {
         $user = new Usuarios();
 
@@ -39,7 +39,6 @@ class RegistrationController extends AbstractController
         $violations = $validator->validate($user->getCorreoElectronico(), $emailConstraint);
 
         if (count($violations) > 0) {
-            // Si hay violaciones, muestra un mensaje de error
             foreach ($violations as $violation) {
                 $this->addFlash('error', $violation->getMessage());
             }
@@ -50,13 +49,26 @@ class RegistrationController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Verifica si ya existe un usuario con el mismo nombre de usuario
+            $existingUsername = $entityManager->getRepository(Usuarios::class)->findOneBy([
+                'nombreUsuario' => $user->getNombreUsuario(),
+            ]);
+
+            if ($existingUsername) {
+                // Muestra un mensaje de error si el nombre de usuario ya está en uso
+                $this->addFlash('error', 'El nombre de usuario ya existe. Por favor, elige otro.');
+
+                return $this->render('registration/register.html.twig', [
+                    'registrationForm' => $form->createView(),
+                ]);
+            }
+
             // Verifica si ya existe un usuario con el mismo correo electrónico
-            $existingUser = $entityManager->getRepository(Usuarios::class)->findOneBy([
+            $existingEmail = $entityManager->getRepository(Usuarios::class)->findOneBy([
                 'correoElectronico' => $user->getCorreoElectronico(),
             ]);
 
-            if ($existingUser) {
-                // Muestra un mensaje de error si el correo electrónico ya está en uso
+            if ($existingEmail) {
                 $this->addFlash('error', 'El correo electrónico ya ha sido utilizado. Por favor, elige otro.');
 
                 return $this->render('registration/register.html.twig', [
@@ -76,6 +88,7 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             // Almacenar el ID del usuario en la sesión
+           
             $session->set('usuario_id', $user->getId());
 
             // Redirigir a la siguiente ruta después de registrar al usuario
