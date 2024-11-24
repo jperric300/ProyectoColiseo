@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rutina de 4 días para aumentar masa muscular</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #000; /* Fondo negro */
+            color: #f4f4f4; /* Texto claro */
+        }
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #4CAF50; /* Verde brillante */
+            text-transform: uppercase;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .card {
+            background: #1c1c1c; /* Negro claro */
+            border: 2px solid #4CAF50; /* Borde verde brillante */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+        .card h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #4CAF50; /* Verde brillante */
+            text-align: center;
+        }
+        .card .section {
+            margin-bottom: 15px;
+        }
+        .section-title {
+            font-size: 1.5rem;
+            color: #f4f4f4;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #4CAF50; /* Línea decorativa */
+            display: inline-block;
+        }
+        .card ul {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            list-style: none;
+            padding-left: 0;
+        }
+        .card ul li {
+            margin-bottom: 10px;
+            background: #2a2a2a; /* Fondo oscuro para cada ejercicio */
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .recommendations {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 1.2rem;
+        }
+        .recommendations ul {
+            display: inline-block;
+            text-align: left;
+        }
+        /* Estilos para el formulario centrado a la derecha */
+        .form-container {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%); /* Centrado vertical */
+            background-color: #333;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            width: 220px; /* Ancho más pequeño */
+        }
+        .form-container h2 {
+            color: #4CAF50;
+            font-size: 1.2rem; /* Font-size más pequeño */
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 8px; /* Espaciado más pequeño */
+        }
+        .form-container label {
+            font-weight: bold;
+            color: #f4f4f4;
+            font-size: 0.9rem; /* Tamaño más pequeño */
+        }
+        .form-container select, .form-container button {
+            padding: 8px;
+            font-size: 0.9rem; /* Tamaño de fuente más pequeño */
+            border-radius: 4px;
+            border: 1px solid #4CAF50;
+        }
+        .form-container button {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<!-- Formulario fijo centrado en la parte derecha -->
+    <div class="form-container">
+        <h2>Selecciona tu Rutina</h2>
+        <form method="post">
+            <label for="objetivo">Selecciona tu objetivo:</label>
+            <select id="objetivo" name="objetivo">
+                <option value="1" {{ objetivoActual == 1 ? 'selected' : '' }}>Perder peso</option>
+                <option value="2" {{ objetivoActual == 2 ? 'selected' : '' }}>Mantener Masa Muscular</option>
+                <option value="3" {{ objetivoActual == 3 ? 'selected' : '' }}>Aumentar masa muscular</option>
+            </select>
+
+            <label for="disponibilidad">Selecciona tu disponibilidad:</label>
+            <select id="disponibilidad" name="disponibilidad">
+                <option value="3" {{ disponibilidadActual == 3 ? 'selected' : '' }}>3 días</option>
+                <option value="4" {{ disponibilidadActual == 4 ? 'selected' : '' }}>4 días</option>
+                <option value="5" {{ disponibilidadActual == 5 ? 'selected' : '' }}>5 días</option>
+            </select>
+
+            <button type="submit">Guardar</button>
+        </form>
+    </div>
+    <div class="container">
+        <h1>Rutina de 4 días para aumentar masa muscular</h1>
+
+        <!-- Día 1 -->
+        <div class="card">
+            <h2>Día 1: Pecho y Tríceps</h2>
+            <div class="section">
+                <span class="section-title">Calentamiento</span>
+                <ul>
+                    <li>10 minutos de elíptica o caminadora a ritmo moderado.</li>
+                </ul>
+            </div>
+            <div class="section">
+                <span class="section-title">Ejercicios</span>
+                <ul>
+                    <li>Press de banca con barra - 4 series de 8-10 repeticiones.</li>
+                    <li>Press inclinado con mancuernas - 4 series de 8-10 repeticiones.</li>
+                    <li>Aperturas con mancuernas en banco plano - 3 series de 12 repeticiones.</li>
+                    <li>Fondos en paralelas (dips) - 3 series de 8-10 repeticiones.</li>
+                    <li>Extensión de tríceps en polea - 3 series de 12 repeticiones.</li>
+                    <li>Rompecráneos con barra - 3 series de 10 repeticiones.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Día 2 -->
+        <div class="card">
+            <h2>Día 2: Espalda y Bíceps</h2>
+            <div class="section">
+                <span class="section-title">Calentamiento</span>
+                <ul>
+                    <li>5-10 minutos de remo ergonómico o elíptica.</li>
+                </ul>
+            </div>
+            <div class="section">
+                <span class="section-title">Ejercicios</span>
+                <ul>
+                    <li>Dominadas (con peso si es posible) - 4 series de 8-10 repeticiones.</li>
+                    <li>Remo con barra - 4 series de 8-10 repeticiones.</li>
+                    <li>Jalón al pecho con polea - 3 series de 12 repeticiones.</li>
+                    <li>Peso muerto convencional - 4 series de 6-8 repeticiones.</li>
+                    <li>Curl de bíceps con barra - 3 series de 10-12 repeticiones.</li>
+                    <li>Curl concentrado con mancuernas - 3 series de 12 repeticiones por brazo.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Día 3 -->
+        <div class="card">
+            <h2>Día 3: Piernas</h2>
+            <div class="section">
+                <span class="section-title">Calentamiento</span>
+                <ul>
+                    <li>10 minutos de caminata rápida con inclinación o bicicleta.</li>
+                </ul>
+            </div>
+            <div class="section">
+                <span class="section-title">Ejercicios</span>
+                <ul>
+                    <li>Sentadilla con barra - 4 series de 8-10 repeticiones.</li>
+                    <li>Prensa de piernas - 4 series de 8-10 repeticiones.</li>
+                    <li>Peso muerto rumano - 3 series de 10 repeticiones.</li>
+                    <li>Extensiones de cuádriceps en máquina - 3 series de 12 repeticiones.</li>
+                    <li>Elevaciones de talones (gemelos) - 4 series de 15-20 repeticiones.</li>
+                    <li>Sentadillas búlgaras (con mancuernas) - 3 series de 12 repeticiones por pierna.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Día 4 -->
+        <div class="card">
+            <h2>Día 4: Hombros y Core</h2>
+            <div class="section">
+                <span class="section-title">Calentamiento</span>
+                <ul>
+                    <li>5-10 minutos de cardio (cinta o elíptica) a ritmo moderado.</li>
+                </ul>
+            </div>
+            <div class="section">
+                <span class="section-title">Ejercicios</span>
+                <ul>
+                    <li>Press militar con barra o mancuernas - 4 series de 8-10 repeticiones.</li>
+                    <li>Elevaciones laterales con mancuernas - 4 series de 12 repeticiones.</li>
+                    <li>Elevaciones frontales con mancuernas - 3 series de 12 repeticiones.</li>
+                    <li>Face pull con cuerda en polea - 3 series de 12 repeticiones.</li>
+                    <li>Crunch con peso - 3 series de 15-20 repeticiones.</li>
+                    <li>Plancha abdominal - 3 series de 45-60 segundos.</li>
+                    <li>Elevaciones de piernas en barra - 3 series de 12 repeticiones.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Recomendaciones -->
+        <div class="recommendations">
+            <h2>Recomendaciones:</h2>
+            <ul>
+                <li>Realiza un buen calentamiento antes de cada sesión y estiramientos al final.</li>
+                <li>Utiliza pesos que desafíen tus músculos, pero que puedas controlar con buena forma.</li>
+                <li>Enfócate en una dieta rica en proteínas y calorías para promover el crecimiento muscular.</li>
+                <li>Duerme bien y asegúrate de tener tiempo de recuperación entre los entrenamientos.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

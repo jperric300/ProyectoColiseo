@@ -37,6 +37,9 @@ class DisponibilidadController extends AbstractController
             return $this->redirectToRoute('app_home'); // Cambia a la ruta deseada
         }
 
+        // Buscar si ya existe una disponibilidad para este usuario
+        $disponibilidad = $entityManager->getRepository(Opciones::class)->findOneBy(['id_usuario' => $usuario]);
+
         // Crear el formulario
         $form = $this->createForm(DisponibilidadFormType::class);
 
@@ -51,14 +54,17 @@ class DisponibilidadController extends AbstractController
             // Mostrar el número de días seleccionados en un mensaje flash
             $this->addFlash('success', 'Has seleccionado ' . $diasSeleccionados . ' días.');
 
-            // Guardar la disponibilidad en la base de datos
-            $disponibilidad = new Opciones();
-            $disponibilidad->setIdUsuario($usuario); // Asignamos la entidad Usuarios
-            $disponibilidad->setDisponibilidad($diasSeleccionados); // Asegúrate de que este método existe
-            $disponibilidad->setObjetivo($option); // Convertimos a entero
+            // Si no existe una disponibilidad para este usuario, crearla
+            if (!$disponibilidad) {
+                $disponibilidad = new Opciones();
+                $disponibilidad->setIdUsuario($usuario); // Asignamos la entidad Usuarios
+                $disponibilidad->setObjetivo($option); // Establecemos el objetivo
+            }
 
-            // Persistir en la base de datos
-            
+            // Actualizar la disponibilidad con los nuevos días seleccionados
+            $disponibilidad->setDisponibilidad($diasSeleccionados); // Asegúrate de que este método existe
+
+            // Persistir los cambios (si existe, actualizar; si no, crear)
             $entityManager->persist($disponibilidad);
             $entityManager->flush();
 

@@ -33,11 +33,11 @@ class Usuarios implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Opciones>
      */
     #[ORM\OneToMany(targetEntity: Opciones::class, mappedBy: 'id_Usuarios')]
-    private Collection $objetio;
+    private Collection $objetivo;
 
     public function __construct()
     {
-        $this->objetio = new ArrayCollection();
+        $this->objetivo = new ArrayCollection();
     } // Roles del usuario
 
     // Getters y Setters
@@ -132,27 +132,27 @@ class Usuarios implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Opciones>
      */
-    public function getObjetio(): Collection
+    public function getObjetivo(): Collection
     {
-        return $this->objetio;
+        return $this->objetivo;
     }
 
-    public function addObjetio(Opciones $objetio): static
+    public function addObjetivo(Opciones $objetivo): static
     {
-        if (!$this->objetio->contains($objetio)) {
-            $this->objetio->add($objetio);
-            $objetio->setIdUsuarios($this);
+        if (!$this->objetivo->contains($objetivo)) {
+            $this->objetivo->add($objetivo);
+            $objetivo->setIdUsuarios($this);
         }
 
         return $this;
     }
 
-    public function removeObjetio(Opciones $objetio): static
+    public function removeObjetivo(Opciones $objetivo): static
     {
-        if ($this->objetio->removeElement($objetio)) {
+        if ($this->objetivo->removeElement($objetivo)) {
             // set the owning side to null (unless already changed)
-            if ($objetio->getIdUsuarios() === $this) {
-                $objetio->setIdUsuarios(null);
+            if ($objetivo->getIdUsuarios() === $this) {
+                $objetivo->setIdUsuarios(null);
             }
         }
 
