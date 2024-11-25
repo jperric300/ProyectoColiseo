@@ -49,7 +49,7 @@ class RutinaController extends AbstractController
 
             // Mostrar un mensaje informando que se han creado las configuraciones por defecto
             return $this->render('rutina/rutina.html.twig', [
-                'mensaje' => 'No se encontraron configuraciones previas. Se han creado configuraciones por defecto: Objetivo 1 y Disponibilidad 3.',
+                'mensaje' => 'No se encontraron configuraciones previas. Se han creado configuraciones por defecto: Objetivo: Perdida de peso y Disponibilidad de 3 dias.',
                 'objetivoActual' => 1,
                 'disponibilidadActual' => 3,
             ]);
