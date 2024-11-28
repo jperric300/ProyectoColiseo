@@ -5,236 +5,239 @@
     <title>Tienda</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
-        /* Estilos generales */
-        body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+      /* Estilos generales */
+body {
+    background-color: #121212;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
 
-        h1 {
-            text-align: center;
-            margin-top:80px;
-            padding: 20px;
-            color: #ffffff;
-        }
+h1 {
+    text-align: center;
+    margin-top: 80px;
+    padding: 20px;
+    color: #ffffff;
+}
 
-        /* Contenedor de productos en formato de grid */
-        #contenedor-productos-carrito {
-            display: grid;
-            grid-template-areas:
-                "producto1 producto2 producto3 carrito"
-                "producto4 producto5 producto6 producto7";
-            grid-gap: 40px;
-            justify-content: center;
-            padding: 20px;
-        }
+/* Contenedor de productos en formato de grid */
+#contenedor-productos-carrito {
+    display: grid;
+    grid-template-areas:
+        "producto1 producto2 producto3 carrito"
+        "producto4 producto5 producto6 producto7";
+    grid-gap: 40px;
+    justify-content: center;
+    padding: 20px;
+}
 
-        /* Tarjetas de producto */
-        .producto, #carrito {
-            background-color: #1e1e1e;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            padding: 20px;
-            width: 280px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.3s;
-            height: 100%;
-        }
+/* Tarjetas de producto */
+.producto, #carrito {
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    width: 280px; /* Tamaño unificado */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s;
+    height: 100%;
+    border: 1px solid #555; /* Bordes del color del título */
+}
 
-        .producto:hover, #carrito:hover {
-            transform: translateY(-5px);
-        }
+.producto:hover, #carrito:hover {
+    transform: translateY(-5px);
+}
 
-        /* Posiciones de las tarjetas y carrito en la grilla */
-        .producto:nth-child(1) { grid-area: producto1; }
-        .producto:nth-child(2) { grid-area: producto2; }
-        .producto:nth-child(3) { grid-area: producto3; }
-        .producto:nth-child(4) { grid-area: producto4; }
-        .producto:nth-child(5) { grid-area: producto5; }
-        .producto:nth-child(6) { grid-area: producto6; }
-        .producto:nth-child(7) { grid-area: producto7; }
-        #carrito { grid-area: carrito; }
+/* Posiciones de las tarjetas y carrito en la grilla */
+.producto:nth-child(1) { grid-area: producto1; }
+.producto:nth-child(2) { grid-area: producto2; }
+.producto:nth-child(3) { grid-area: producto3; }
+.producto:nth-child(4) { grid-area: producto4; }
+.producto:nth-child(5) { grid-area: producto5; }
+.producto:nth-child(6) { grid-area: producto6; }
+.producto:nth-child(7) { grid-area: producto7; }
+#carrito { grid-area: carrito; }
 
-        .producto img {
-            width: 100%;
-            height: 280px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
+.producto img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
 
-        /* Estilo del título de cada producto */
-        .producto h3 {
-            font-size: 1.3em;
-            color: #ffffff;
-            margin: 0 0 20px 0;
-            text-align: center;
-        }
+/* Estilo del título de cada producto y del carrito */
+.producto h3, #carrito h3 {
+    font-size: 1.3em;
+    color: #FFD700; /* Mismo color */
+    margin: 0 0 20px 0;
+    text-align: center;
+}
 
-        /* Descripción del producto */
-        .producto .descripcion {
-            color: #b3b3b3;
-            font-size: 0.9em;
-            text-align: center;
-            margin: 12px 0;
-        }
+/* Descripción del producto */
+.producto .descripcion {
+    color: #b3b3b3;
+    font-size: 0.9em;
+    text-align: center;
+    margin: 12px 0;
+}
 
-        /* Precio y stock */
-        .precio-stock {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            margin: 12px 0;
-        }
+/* Precio y stock */
+.precio-stock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 12px 0;
+}
 
-        .precio-stock p {
-            margin: 0 15px;
-            font-size: 1em;
-        }
+.precio-stock p {
+    margin: 0 15px;
+    font-size: 1em;
+}
 
-        .add-to-cart-form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            margin-top: auto;
-        }
+.add-to-cart-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: auto;
+}
 
-        .add-to-cart-form input[type="number"] {
-            width: 60px;
-            padding: 5px;
-            margin: 5px 0;
-            text-align: center;
-            background-color: #333;
-            border: 1px solid #444;
-            color: #ffffff;
-            border-radius: 5px;
-        }
+.add-to-cart-form input[type="number"] {
+    width: 60px;
+    padding: 5px;
+    margin: 5px 0;
+    text-align: center;
+    background-color: #333;
+    border: 1px solid #444;
+    color: #ffffff;
+    border-radius: 5px;
+}
 
-        .add-to-cart-form button {
-            padding: 8px 12px;
-            background-color: #6200ea;
-            color: #ffffff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            width: 100%;
-        }
+.add-to-cart-form button {
+    padding: 8px 12px;
+    background-color: #6200ea;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+}
 
-        .add-to-cart-form button:hover {
-            background-color: #3700b3;
-        }
+.add-to-cart-form button:hover {
+    background-color: #3700b3;
+}
 
-        /* Estilos específicos para el carrito */
-        #carrito {
-            background-color: #80d4ff;
-            padding: 20px;
-            width: 250px;
-            border-radius: 8px;
-        }
+/* Estilos específicos para el carrito */
+#carrito {
+    background-color: #1e1e1e; /* Igual que las tarjetas */
+    padding: 20px;
+    width: 280px; /* Igual que las tarjetas */
+    border-radius: 8px;
+    border: 2px solid #FFD700; /* Bordes del color del título */
+}
 
-        #carrito h3 {
-            text-align: center;
-            color: #000000;
-            font-size: 1.3em;
-            margin-top: 0;
-        }
+#carrito h3 {
+    text-align: center;
+    color: #FFD700; /* Igual que las tarjetas */
+    font-size: 1.3em;
+    margin-top: 0;
+}
 
-        #carrito ul {
-            list-style: none;
-            padding: 0;
-        }
+#carrito ul {
+    list-style: none;
+    padding: 0;
+}
 
-        #carrito ul li {
-            color: #000000;
-            padding: 8px 0;
-            border-bottom: 1px solid #333;
-        }
+#carrito ul li {
+    color: white;
+    padding: 8px 0;
+    border-bottom: 1px solid #333;
+}
 
-        .eliminar-producto {
-            background: none;
-            border: none;
-            color: red;
-            font-size: 1.2em;
-            cursor: pointer;
-            margin-left: 10px;
-        }
+.eliminar-producto {
+    background: none;
+    border: none;
+    color: red;
+    font-size: 1.2em;
+    cursor: pointer;
+    margin-left: 10px;
+}
 
-        /* Estilo del botón de pagar */
-        #boton-pagar {
-            padding: 12px 24px;
-            background: linear-gradient(145deg, #6a1b9a, #ab47bc); /* Degradado de color */
-            color: #ffffff;
-            border: none;
-            border-radius: 50px; /* Botón redondeado */
-            font-size: 1.2em;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para efecto flotante */
-            transition: all 0.3s ease; /* Transición suave para efectos */
-            width: 100%;
-            text-align: center;
-        }
+/* Estilo del botón de pagar */
+#boton-pagar {
+    padding: 12px 24px;
+    background: linear-gradient(145deg, #6a1b9a, #ab47bc); /* Degradado de color */
+    color: #ffffff;
+    border: none;
+    border-radius: 50px; /* Botón redondeado */
+    font-size: 1.2em;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para efecto flotante */
+    transition: all 0.3s ease; /* Transición suave para efectos */
+    width: 100%;
+    text-align: center;
+}
 
-        /* Efecto hover para el botón de pagar */
-        #boton-pagar:hover {
-            background: linear-gradient(145deg, #ab47bc, #6a1b9a); /* Invertir los colores del degradado */
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Aumentar el efecto de sombra */
-            transform: translateY(-4px); /* Efecto de elevar el botón */
-        }
+/* Efecto hover para el botón de pagar */
+#boton-pagar:hover {
+    background: linear-gradient(145deg, #ab47bc, #6a1b9a); /* Invertir los colores del degradado */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Aumentar el efecto de sombra */
+    transform: translateY(-4px); /* Efecto de elevar el botón */
+}
 
-        /* Efecto activo (cuando el botón se presiona) */
-        #boton-pagar:active {
-            transform: translateY(2px); /* Reducir el efecto de elevación */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Efecto de sombra más pequeño */
-        }
-        .footer {
-            background-color: #222;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-            margin-top: auto;
-        }
+/* Efecto activo (cuando el botón se presiona) */
+#boton-pagar:active {
+    transform: translateY(2px); /* Reducir el efecto de elevación */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Efecto de sombra más pequeño */
+}
 
-        /* Estilos específicos para la barra de navegación */
-        .navbar {
-            background-color: #333;
-            justify-content: center;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
-            padding: 15px 20px;
-        }
+.footer {
+    background-color: #222;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    margin-top: auto;
+}
 
-        .navbar .navbar-brand, .navbar .nav-link {
-            color: #bbb;
-            margin-left: 15px;
-            font-weight: normal;
-        }
+/* Estilos específicos para la barra de navegación */
+.navbar {
+    background-color: #333;
+    justify-content: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+    padding: 15px 20px;
+}
 
-        .navbar .navbar-brand:hover, .navbar .nav-link:hover {
-            color: #FFD700;
-        }
+.navbar .navbar-brand, .navbar .nav-link {
+    color: #bbb;
+    margin-left: 15px;
+    font-weight: normal;
+}
 
-        .navbar .nav-link.active {
-            color: #FFD700;
-            font-weight: bold;
-        }
+.navbar .navbar-brand:hover, .navbar .nav-link:hover {
+    color: #FFD700;
+}
 
-        .navbar .btn-logout {
-            color: #000;
-            background-color: #FFD700;
-            border: none;
-        }
+.navbar .nav-link.active {
+    color: #FFD700;
+    font-weight: bold;
+}
 
-        .navbar .btn-logout:hover {
-            background-color: #fff;
-            color: #333;
-        }
+.navbar .btn-logout {
+    color: #000;
+    background-color: #FFD700;
+    border: none;
+}
+
+.navbar .btn-logout:hover {
+    background-color: #fff;
+    color: #333;
+}
     </style>
 </head>
 <body>
