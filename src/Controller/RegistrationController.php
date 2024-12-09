@@ -76,10 +76,24 @@ class RegistrationController extends AbstractController
                 ]);
             }
 
+            // Validar la contraseña
+            $plainPassword = $form->get('plainPassword')->getData();
+            $passwordErrors = $this->validatePassword($plainPassword);
+
+            if (count($passwordErrors) > 0) {
+                foreach ($passwordErrors as $error) {
+                    $this->addFlash('error', $error);
+                }
+
+                return $this->render('registration/register.html.twig', [
+                    'registrationForm' => $form->createView(),
+                ]);
+            }
+
             // Hashear la contraseña
             $hashedPassword = $passwordHasher->hashPassword(
                 $user,
-                $form->get('plainPassword')->getData()
+                $plainPassword
             );
             $user->setPassword($hashedPassword);
 
@@ -88,7 +102,6 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             // Almacenar el ID del usuario en la sesión
-           
             $session->set('usuario_id', $user->getId());
 
             // Redirigir a la siguiente ruta después de registrar al usuario
@@ -98,5 +111,27 @@ class RegistrationController extends AbstractController
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
+    }
+
+    private function validatePassword(string $password): array
+    {
+        $errors = [];
+
+        // Mínimo 8 caracteres
+        if (strlen($password) < 8) {
+            $errors[] = 'La contraseña debe tener al menos 8 caracteres.';
+        }
+
+        // Al menos una letra mayúscula
+        if (!preg_match('/[A-Z]/', $password)) {
+            $errors[] = 'La contraseña debe incluir al menos una letra mayúscula.';
+        }
+
+        // Al menos un número
+        if (!preg_match('/\d/', $password)) {
+            $errors[] = 'La contraseña debe incluir al menos un número.';
+        }
+
+        return $errors;
     }
 }

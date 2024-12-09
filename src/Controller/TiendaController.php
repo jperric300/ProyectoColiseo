@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Productos;
+use App\Entity\Pedidos;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -136,85 +138,99 @@ class TiendaController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/pagar", name="app_pagar", methods={"POST"})
-     */
-    public function pagar(MailerInterface $mailer): Response
-    {
-        // Verificar si el usuario está autenticado
-        if (!$this->getUser()) {
-            return $this->redirectToRoute('app_login');
-        }
+   /**
+ * @Route("/pagar", name="app_pagar", methods={"POST"})
+ */
+public function pagar(MailerInterface $mailer): Response
+{
+    // Verificar si el usuario está autenticado
+    if (!$this->getUser()) {
+        return $this->redirectToRoute('app_login');
+    }
 
-        $session = $this->requestStack->getSession();
-        $carrito = $session->get('carrito', []);
+    $session = $this->requestStack->getSession();
+    $carrito = $session->get('carrito', []);
 
-        // Verificar que el carrito no esté vacío
-        if (empty($carrito)) {
-            $this->addFlash('error', 'Tu carrito está vacío.');
-            return $this->redirectToRoute('app_tienda');
-        }
-
-        // Obtener el correo del usuario desde la sesión o de otra manera (por ejemplo, el objeto de usuario autenticado)
-        $correoUsuario = $this->getUser()->getCorreoElectronico();
-
-        // Preparar los detalles de la compra
-        $productosEnCarrito = [];
-        $total = 0;
-        foreach ($carrito as $productoId => $cantidad) {
-            $producto = $this->entityManager->getRepository(Productos::class)->find($productoId);
-            if ($producto) {
-                $subtotal = $cantidad * $producto->getPrecio();
-                $productosEnCarrito[] = [
-                    'nombre' => $producto->getNombre(),
-                    'cantidad' => $cantidad,
-                    'subtotal' => $subtotal,
-                ];
-                $total += $subtotal;
-            }
-        }
-
-        // Procesar la compra y actualizar el stock
-        foreach ($carrito as $productoId => $cantidad) {
-            $producto = $this->entityManager->getRepository(Productos::class)->find($productoId);
-            if ($producto) {
-                $nuevoStock = $producto->getStock() - $cantidad;
-
-                // Si el stock es insuficiente
-                if ($nuevoStock < 0) {
-                    $this->addFlash('error', 'No hay suficiente stock para el producto: ' . $producto->getNombre());
-                    return $this->redirectToRoute('app_tienda');
-                }
-
-                // Actualizar el stock
-                $producto->setStock($nuevoStock);
-                $this->entityManager->persist($producto);
-            }
-        }
-
-        // Guardar los cambios en la base de datos
-        $this->entityManager->flush();
-
-        // Limpiar el carrito de la sesión
-        $session->remove('carrito');
-
-        // Crear el mensaje de correo
-        $email = (new Email())
-            ->from('elcoliseoshop@gmail.com') // El correo desde el que se enviará el mensaje
-            ->to($correoUsuario)  // El correo del usuario
-            ->subject('Confirmación de Compra')
-            ->html($this->renderView('tienda/correo_confirmacion.html.twig', [
-                'productosEnCarrito' => $productosEnCarrito,
-                'total' => $total,
-            ]));
-
-        // Enviar el correo
-        $mailer->send($email);
-
-        // Mostrar mensaje de éxito
-        $this->addFlash('success', 'Compra realizada con éxito. Los productos han sido descontados del stock. Un correo de confirmación ha sido enviado.');
-
-        // Redirigir a la tienda o a una página de confirmación
+    // Verificar que el carrito no esté vacío
+    if (empty($carrito)) {
+        $this->addFlash('error', 'Tu carrito está vacío.');
         return $this->redirectToRoute('app_tienda');
     }
+
+    // Obtener el correo del usuario desde la sesión o de otra manera (por ejemplo, el objeto de usuario autenticado)
+    $correoUsuario = $this->getUser()->getCorreoElectronico();
+
+    // Preparar los detalles de la compra
+    $productosEnCarrito = [];
+    $total = 0;
+    $productos = []; // IDs de productos
+    $cantidades = []; // Cantidades correspondientes
+
+    foreach ($carrito as $productoId => $cantidad) {
+        $producto = $this->entityManager->getRepository(Productos::class)->find($productoId);
+        if ($producto) {
+            $subtotal = $cantidad * $producto->getPrecio();
+            $productosEnCarrito[] = [
+                'nombre' => $producto->getNombre(),
+                'cantidad' => $cantidad,
+                'subtotal' => $subtotal,
+            ];
+            $productos[] = $producto->getId();
+            $cantidades[] = $cantidad;
+            $total += $subtotal;
+        }
+    }
+
+    // Procesar la compra y actualizar el stock
+    foreach ($carrito as $productoId => $cantidad) {
+        $producto = $this->entityManager->getRepository(Productos::class)->find($productoId);
+        if ($producto) {
+            $nuevoStock = $producto->getStock() - $cantidad;
+
+            // Si el stock es insuficiente
+            if ($nuevoStock < 0) {
+                $this->addFlash('error', 'No hay suficiente stock para el producto: ' . $producto->getNombre());
+                return $this->redirectToRoute('app_tienda');
+            }
+
+            // Actualizar el stock
+            $producto->setStock($nuevoStock);
+            $this->entityManager->persist($producto);
+        }
+    }
+
+    // Guardar el pedido en la base de datos
+    $pedido = new Pedidos();
+    $pedido->setUserId($this->getUser()->getId());
+    $pedido->setProductos($productos);  // Lista de IDs de productos
+    $pedido->setCantidades($cantidades); // Lista de cantidades
+    $pedido->setPrecioTotal($total);
+
+    // Persistir el pedido
+    $this->entityManager->persist($pedido);
+    $this->entityManager->flush();
+
+    // Limpiar el carrito de la sesión
+    $session->remove('carrito');
+
+    // Crear el mensaje de correo
+    $email = (new Email())
+        ->from('elcoliseoshop@gmail.com') // El correo desde el que se enviará el mensaje
+        ->to($correoUsuario)  // El correo del usuario
+        ->subject('Confirmación de Compra')
+        ->html($this->renderView('tienda/correo_confirmacion.html.twig', [
+            'productosEnCarrito' => $productosEnCarrito,
+            'total' => $total,
+        ]));
+
+    // Enviar el correo
+    $mailer->send($email);
+
+    // Mostrar mensaje de éxito
+    $this->addFlash('success', 'Compra realizada con éxito. Los productos han sido descontados del stock. Un correo de confirmación ha sido enviado.');
+
+    // Redirigir a la tienda o a una página de confirmación
+    return $this->redirectToRoute('app_tienda');
+}
+
 }
